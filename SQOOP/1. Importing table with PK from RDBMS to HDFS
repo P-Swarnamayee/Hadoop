@@ -1,0 +1,27 @@
+sqoop import \
+--connect jdbc:mysql://localhost/sqoopdb1 \
+--username uname \
+--password pwd \
+--table emp1 \
+--target-dir /sqoopimp1
+
+o/p: 
+----
+hadoop fs -ls /sqoopimp1 =====> 5files -> 5files (one file for each record)
+hadoop fs -cat /sqoopimp/part-m-00000 (to view what is in the file)
+
+====================================================================================================================================================================
+
+Controlling the no.of mappers to '1' by setting -m 1 option we get all the records in a single file:
+----------------------------------------------------------------------------------------------------
+sqoop import \
+--connect jdbc:mysql://localhost/sqoopdb1 \
+--username uname \
+--password pwd \
+--table emp1 -m 1 \
+--target-dir /sqoopimp2 \
+
+o/p:
+----
+hadoop fs -ls /sqoopimp2 ====> 1file -> all records
+hadoop fs -cat /sqoopimp2/part-m-00000 -> You will have all the records here
