@@ -1,0 +1,16 @@
+Note: If table is not having primary key then no.of mappers should always be '1' ===> "-m 1"
+
+When multiple mappers are initiated:
+* First mapper: Automatically points to the beginning record of first split
+* Remaining mapper: Cannot point to beginning of their splits randomly because there is no primary key.
+So only sequential reading is allowed from beginning to end of the table.
+So only 1 mapper should be initiated (-m 1)
+=================================================
+sqoop import \                                    
+--connect jdbc:mysql://localhost/sqoopdb1 \
+--username uname \
+--password pwd \
+--table emp1 -m 1 \
+--target-dir /sqoopimp3
+=================================================
+Note: "n mapper tasks" ===> "n output files"
