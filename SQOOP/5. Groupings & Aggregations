@@ -1,0 +1,63 @@
+Various Aggregations: 
+- sum()
+- avg()
+- max()
+- min()
+- count()
+
+CASE(1): SINGLE GROUPING & SINGLE AGGREGATION:
+-----------------------------------------------
+O/P:
+      dno    aggregation
+      11    totsal
+      12    totsal  
+      13    totsal
+
+  > sqoop import \
+  > --connect jdbc:mysql://localhost/sqoopdb1 \
+  > --username uname \
+  > --password pwd \
+  > --query 'select dno,sum(sal) from emp1 where $CONDITIONS group by dno' -m 1 \
+  > --target-dir /sqoopimp6
+
+CASE(2): MULTIPLE GROUPINGS & SINGLE AGGREGATION:
+--------------------------------------------------
+O/P:
+      dno    sex    aggregation
+      11      m      totsal
+      11      f      totsal
+      12      m      totsal
+      12      f      totsal
+
+  > sqoop import \
+  > --connect jdbc:mysql://localhost/sqoopdb1 \
+  > --username uname \
+  > --password pwd \
+  > --query 'select dno,sex,sum(sal) from emp1 where $CONDITIONS group by dno,sex' -m 1 \
+  > --target-dir /sqoopimp7
+  
+CASE(3): SINGLE GROUPING & MULTIPLE AGGREGATIONS:
+--------------------------------------------------
+O/P:
+      dno  totsal  avgsal  maxsal  minsal  count
+      11    1223    325    321432    235    44
+
+  > sqoop import \
+  > --connect jdbc:mysql://localhost/sqoopdb1 \
+  > --username uname \
+  > --password pwd \
+  > --query 'select dno,sum(sal),tot(sal),max(sal),min(sal),count(sal) from emp1 where $CONDITIONS group by dno' -m 1 \
+  > --target-dir /sqoopimp8
+
+CASE(4): MULTIPLE GROUPINGS & MULTIPLE AGGREGATIONS:
+----------------------------------------------------
+O/P:
+      dno sex   totsal  avgsal  minsal  maxsal  count
+      11    m    23432    423    423      432    3244
+
+  > sqoop import \
+  > --connect jdbc:mysql://localhost/sqoopdb1 \
+  > --username uname \
+  > --password pwd \
+  > --query 'select dno,sum(sal),tot(sal),max(sal),min(sal),count(sal) from emp1 where $CONDITIONS group by dno,sex' -m 1 \
+  > --target-dir /sqoopimp6
