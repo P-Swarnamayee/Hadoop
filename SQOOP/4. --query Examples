@@ -1,0 +1,57 @@
+1. Retrieving all rows and dump into HDFS:
+--------------------------------------------
+  > sqoop import \
+  > --connect jdbc:mysql://localhost/sqoopdb1 \
+  > --username uname \
+  > --password pwd \
+  > --query 'select * from emp1 where $CONDITIONS' -m 1 \
+  > --target-dir /sqoopimp5
+
+2. Filtering rows using --query:
+--------------------------------
+  > sqoop import \
+  > --connect jdbc:mysql://localhost/sqoopdb1 \
+  > --username uname \
+  > --password pwd \
+  > --query 'select * from emp1 where $CONDITIONS and dno=12' -m 1 \
+  > --target-dir /sqoopimp6
+ o/p: hadoop fs -cat /sqoopimp6/part-m-00000
+
+3. Generating new fields while importing:
+-----------------------------------------
+  > sqoop import \
+  > --connect jdbc:mysql://localhost/sqoopdb1 \
+  > --username uname \
+  > --password pwd \
+  > --query 'select eid, ename, sal, sal*0.1, sal*0.2, sal-(sal*0.1)+(sal*0.2) from emp1 where $CONDITIONS' -m 1 \
+  > --target-dir /sqoopimp5
+
+4. Merging tables at the time of importing i.e. importing data from 2 different tables (emp1 and emp2):
+-------------------------------------------------------------------------------------------------------
+  > sqoop import \
+  > --connect jdbc:mysql://localhost/sqoopdb1 \
+  > --username uname \
+  > --password pwd \
+  > --query 'select * from emp1 where $CONDITIONS union all select * from emp2 where $CONDITIONS' -m 1 \
+  > --target-dir /sqoopimp5
+
+*****
+NOTE:
+*****
+  - The schema for the merging datasets should be same.
+  - For each select statement $CONDITIONS is mandatory.
+
+union ---------> Without duplicates
+union all -----> With duplicates
+
+5. Merging two tables with different schemas: (emp1 and emp3)
+-------------------------------------------------------------
+emp1 --> eid,ename,sal,sex,desig,city
+emp3 --> eid,ename,sal,sex,dno
+
+  > sqoop import \
+  > --connect jdbc:mysql://localhost/sqoopdb1 \
+  > --username uname \
+  > --password pwd \
+  > --query 'select eid,ename,sex,sno,'xxxxx' as desig, '*****' as city from emp1 where $CONDITIONS union all select eid, ename, sal,sex,0 as dno,desig,city from emp3 where $CONDITIONS' -m 1 \
+  > --target-dir /sqoopimp6
