@@ -1,0 +1,16 @@
+By default sqoop writes with comma(,) delimiter between the fields.
+To change the delimiter use the following option
+    ===========================
+    --fields-terminated-by '\t'
+    ===========================
+
+Example: Using tab space as delimiter:
+--------------------------------------
+
+> sqoop import \
+> --connect jdbc:mysql://localhost/sqoopdb1 \
+> --username uname \
+> --password pwd \
+> --query 'select * from emp1 where $CONDITIONS' -m 1 \
+> --fields-terminated-by '\t' \
+> --target-dir /sqoopimp7
