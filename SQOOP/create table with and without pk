@@ -1,0 +1,15 @@
+# WITH PRIMARY KEY
+create table emp1(eid int primary key, ename char(10), sal int, sex char(10), dno int);
+insert into emp1 values(101,'Mike',10000,'M',11);
+insert into emp1 values(102,'Neymar',20000,'M',12);
+insert into emp1 values(103,'Rose',30000,'F',11);
+insert into emp1 values(104,'Lynn',40000''M',12);
+insert into emp1 values(105,'Amy',50000,'F',13);
+
+# WITHOUT PRIMARY KEY
+create table emp1(eid int, ename char(10),sal int, sex char(10), dno int);
+insert into emp1 values(101,'Mike',10000,'M',11);
+insert into emp1 values(102,'Neymar',20000,'M',12);
+insert into emp1 values(103,'Rose',30000,'F',11);
+insert into emp1 values(104,'Lynn',40000''M',12);
+insert into emp1 values(105,'Amy',50000,'F',13);
