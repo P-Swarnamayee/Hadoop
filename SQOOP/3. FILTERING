@@ -1,0 +1,32 @@
+1. Filtering rows while importing data:
+   =====================================
+   > sqoop import \
+   > --connect jdbc:mysql://localhost/sqoopdb1 \
+   > --username uname \
+   > --password pwd \
+   > --table emp1 --where "dno=11" -m 1 \
+   > --target-dir /sqoopimp4
+
+   # Taking data to LFS from HDFS
+   hadoop fs -get /sqoopimp4/part-m-00000 lfsdir1        /sqoopimp4/part-m-00000 ===> HDFS; lfsdir1 ====> LFS
+   cat lfsdir1/part-m-00000  
+
+2. Filtering columns while importing data:
+   =======================================
+   > sqoop import \
+   > --connect jdbc:mysql://localhost/sqoopdb1 \
+   > --username uname \
+   > --password pwd \
+   > --table emp1 --columns eid, ename, sal -m 1 \
+   > --target-dir /sqoopimp5
+
+3. Filtering rows and columns simultaneously while importing data:
+   ===============================================================
+   > sqoop import \
+   > --connect jdbc:mysql://localhost/sqoopdb1 \
+   > --username uname \
+   > --password pwd \
+   > --table emp1 --columns eid, ename, sal --where "dno=11" -m 1 \
+   > --target-dir /sqoopimp6
+
+   NOTE: If "NameNode" is in "safemode" (your jobs will fail), to leave safe mode use============> [ hadoop dfsadmin -safemode leave]
