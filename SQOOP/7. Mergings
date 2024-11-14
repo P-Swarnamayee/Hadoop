@@ -1,0 +1,59 @@
+2 Types of Merging:
+====================
+
+1) Vertical merging: Merging rows vertically ============> Eg: Union ===> CONDITION: Merging tables should have same schema (Same cols, same dtypes)
+2) Horizontal merging: Merging columns horizontally =====> Eg: Join ====> CONDITION: Merging tables should have atleast one common column
+
+Joins are of 2 types:
+----------------------
+Inner join
+Outer join ----(3)---- Left outer join
+                  ---- Right outer join
+                  ---- Full outer join
+
+CASE(1): INNER JOIN:
+--------------------
+> sqoop import \
+> --connect jdbc:mysql://localhost/sqoopdb1 \
+> --username uname \
+> --password pwd \
+> --query 'select eid,ename,sex,sal,e.dno,dname,location from emp e join dept d on e.dn0 = d.dno where $CONDITIONS' -m 1 \
+> --target-dir /sqoopimp8
+
+CASE(2): LEFT OUTER JOIN:
+-------------------------
+> sqoop import \
+> --connect jdbc:mysql://localhost/sqoopdb1 \
+> --username uname \
+> --password pwd \
+> --query 'select eid,ename,sex,sal,e.dno,dname,location from emp e left outer join dept d on e.dn0 = d.dno where $CONDITIONS' -m 1 \
+> --target-dir /sqoopimp9
+
+CASE(3): RIGHT OUTER JOIN:
+---------------------------
+> sqoop import \
+> --connect jdbc:mysql://localhost/sqoopdb1 \
+> --username uname \
+> --password pwd \
+> --query 'select eid,ename,sex,sal,e.dno,dname,location from emp e right outer join dept d on e.dn0 = d.dno where $CONDITIONS' -m 1 \
+> --target-dir /sqoopimp10
+
+CASE(4): FULL OUTER JOIN:
+--------------------------
+> sqoop import \
+> --connect jdbc:mysql://localhost/sqoopdb1 \
+> --username uname \
+> --password pwd \
+> --query 'select eid,ename,sex,sal,e.dno,dname,location from emp e full outer join dept d on e.dn0 = d.dno where $CONDITIONS' -m 1 \
+> --target-dir /sqoopimp11
+
+
+*************************************************************************************
+Import data to the existted directory instead of creating a new directory everytime:
+*************************************************************************************
+> sqoop import \
+> --connect jdbc:mysql://localhost/sqoopdb1 \
+> --username uname \
+> --password pwd \
+> --query 'select * from emp1 where $CONDITIONS' -m 1 \
+> --target-dir /sqoopimp11 --append
